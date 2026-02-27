@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vinayaka Foods</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Telugu&family=Yatra+One&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --yellow: #FFD700;
+  --yellow2: #FFC200;
+  --red: #D32F2F;
+  --red2: #B71C1C;
+  --green: #2E7D32;
+  --green2: #1B5E20;
+  --blue: #1A237E;
+  --pink: #E91E8C;
+  --white: #FFFFFF;
+  --cream: #FFFDE7;
+  --dark: #1A1A1A;
+  --shadow: 0 4px 24px rgba(0,0,0,0.13);
+  --radius: 18px;
+}
+body { font-family:'Poppins',sans-serif; background:#FFFDE7; overflow-x:hidden; }
+
+/* ── SCREENS ── */
+.screen { display:none; min-height:100vh; flex-direction:column; background:#FFFDE7; }
+.screen.active { display:flex; }
+
+/* ══════════════════════════════
+   HOME / SPLASH SCREEN
+══════════════════════════════ */
+#screen-home {
+  background: linear-gradient(160deg, #FFD700 0%, #FFA000 50%, #D32F2F 100%);
+  align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+#screen-home::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15) 0%, transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%);
+}
+.home-deco {
+  position:absolute; font-size:100px; opacity:0.07;
+  animation: floatDeco 7s ease-in-out infinite;
+}
+.home-deco:nth-child(1) { top:5%; left:5%; animation-delay:0s; }
+.home-deco:nth-child(2) { top:10%; right:5%; animation-delay:2s; font-size:80px; }
+.home-deco:nth-child(3) { bottom:15%; left:8%; animation-delay:4s; font-size:90px; }
+.home-deco:nth-child(4) { bottom:8%; right:8%; animation-delay:1s; }
+@keyframes floatDeco { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-18px) rotate(5deg)} }
+
+.home-center { position:relative; text-align:center; padding:30px 20px; }
+.home-logo-ring {
+  width:150px; height:150px; border-radius:50%;
+  background:white; margin:0 auto 20px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 0 0 8px rgba(255,255,255,0.3), 0 12px 50px rgba(0,0,0,0.2);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 8px rgba(255,255,255,0.3),0 12px 50px rgba(0,0,0,0.2)} 50%{box-shadow:0 0 0 16px rgba(255,255,255,0.15),0 12px 60px rgba(0,0,0,0.3)} }
+.home-logo-ring .logo-emoji { font-size:70px; }
+.home-brand { font-family:'Playfair Display',serif; font-size:32px; font-weight:900; color:white; text-shadow:0 2px 12px rgba(0,0,0,0.2); line-height:1.1; margin-bottom:6px; }
+.home-tel { font-size:13px; color:rgba(255,255,255,0.85); font-weight:500; letter-spacing:0.5px; margin-bottom:24px; }
+.home-fssai { background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.4); border-radius:20px; padding:5px 14px; font-size:11px; color:white; font-weight:600; display:inline-block; margin-bottom:28px; backdrop-filter:blur(6px); }
+.enter-btn {
+  background:white; border:none; border-radius:50px; padding:16px 48px;
+  font-family:'Poppins',sans-serif; font-size:16px; font-weight:700;
+  color:var(--red); cursor:pointer; box-shadow:0 6px 30px rgba(0,0,0,0.2);
+  transition:transform 0.2s, box-shadow 0.2s;
+  animation: bounceIn 1s ease 0.5s both;
+}
+@keyframes bounceIn { 0%{transform:scale(0.5);opacity:0} 70%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
+.enter-btn:hover { transform:scale(1.05); box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+.home-tagline { margin-top:16px; font-size:13px; color:rgba(255,255,255,0.8); font-style:italic; }
+
+/* ══════════════════════════════
+   APP BAR
+══════════════════════════════ */
+.app-bar {
+  background:linear-gradient(135deg, #FFD700, #FFA000);
+  padding:12px 16px; display:flex; align-items:center; gap:10px;
+  box-shadow:0 2px 16px rgba(0,0,0,0.15); position:sticky; top:0; z-index:200;
+  flex-shrink:0;
+}
+.back-btn {
+  background:rgba(255,255,255,0.3); border:none; width:38px; height:38px;
+  border-radius:50%; cursor:pointer; font-size:18px; color:var(--dark);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  font-weight:700;
+}
+.app-bar-title { font-family:'Playfair Display',serif; font-weight:700; font-size:17px; color:var(--dark); flex:1; }
+.app-bar-sub { font-size:10px; color:rgba(0,0,0,0.5); font-weight:500; }
+
+/* ══════════════════════════════
+   MAIN CONTENT
+══════════════════════════════ */
+.main-content { flex:1; overflow-y:auto; padding-bottom:72px; }
+
+/* HERO BANNER */
+.hero {
+  background:linear-gradient(135deg, #FFD700 0%, #FFC107 40%, #FF8F00 100%);
+  padding:0; position:relative; overflow:hidden;
+}
+.hero-inner { padding:24px 20px 20px; }
+.hero-badge-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.hero-badge {
+  background:rgba(255,255,255,0.35); border:1px solid rgba(255,255,255,0.5);
+  border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600; color:var(--dark);
+  backdrop-filter:blur(4px);
+}
+.hero-title { font-family:'Playfair Display',serif; font-size:30px; font-weight:900; color:var(--dark); line-height:1.1; margin-bottom:4px; }
+.hero-subtitle { font-size:13px; font-weight:600; color:var(--red2); margin-bottom:14px; }
+.hero-tel-row { display:flex; gap:8px; flex-wrap:wrap; }
+.hero-tel-btn {
+  background:var(--red); color:white; border:none; border-radius:10px;
+  padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;
+  display:flex; align-items:center; gap:5px; transition:transform 0.15s;
+}
+.hero-tel-btn:hover { transform:scale(1.04); }
+.hero-wa-btn { background:#25D366; }
+
+/* RED PRODUCT BANNER */
+.product-banner {
+  background:linear-gradient(135deg, var(--red), var(--red2));
+  margin:14px; border-radius:var(--radius); padding:18px;
+  display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+  box-shadow:0 4px 20px rgba(211,47,47,0.3);
+}
+.product-banner-text h3 { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--yellow); }
+.product-banner-text p { font-size:12px; color:rgba(255,255,255,0.85); margin-top:2px; }
+.product-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.product-tag {
+  background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.35);
+  border-radius:8px; padding:5px 10px; font-size:11px; font-weight:600; color:white;
+}
+
+/* GREEN INFO CARD */
+.green-card {
+  background:linear-gradient(135deg, var(--green), var(--green2));
+  margin:14px; border-radius:var(--radius); padding:18px;
+  box-shadow:0 4px 20px rgba(46,125,50,0.25);
+}
+.green-card h3 { font-family:'Playfair Display',serif; font-size:16px; color:var(--yellow); margin-bottom:10px; }
+.green-card p { font-size:13px; color:rgba(255,255,255,0.9); line-height:1.8; }
+
+/* SECTION TITLE */
+.section-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--dark); padding:16px 16px 10px; }
+
+/* PRODUCT CARDS GRID */
+.products-grid { display:flex; flex-wrap:wrap; padding:0 10px 10px; gap:0; }
+.product-card {
+  width:calc(50% - 12px); margin:6px;
+  background:white; border-radius:16px;
+  box-shadow:0 2px 14px rgba(0,0,0,0.08);
+  border:2px solid #FFF3E0; overflow:hidden;
+  display:flex; flex-direction:column;
+  transition:transform 0.15s;
+}
+.product-card:hover { transform:translateY(-3px); }
+.product-card-icon { height:110px; display:flex; align-items:center; justify-content:center; font-size:60px; background:linear-gradient(135deg,#FFF9C4,#FFE0B2); }
+.product-card-body { padding:10px 12px 12px; }
+.product-card-body h4 { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+.product-card-body p { font-size:11px; color:#888; line-height:1.5; }
+.product-card-price {
+  margin-top:8px; background:var(--red); color:white;
+  border-radius:8px; padding:5px 10px; font-size:12px; font-weight:700; display:inline-block;
+}
+
+/* ADDRESS CARD */
+.address-card {
+  margin:14px; background:white; border-radius:var(--radius);
+  padding:18px; box-shadow:var(--shadow); border-left:5px solid var(--yellow2);
+}
+.address-card h3 { font-family:'Playfair Display',serif; font-size:16px; color:var(--dark); margin-bottom:10px; }
+.address-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; font-size:13px; color:#444; line-height:1.6; }
+.address-icon { font-size:16px; flex-shrink:0; margin-top:2px; }
+.action-btns { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.action-btn {
+  border:none; border-radius:10px; padding:9px 16px; font-size:12px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; gap:5px; font-family:'Poppins',sans-serif;
+  transition:transform 0.15s;
+}
+.action-btn:hover { transform:scale(1.04); }
+.btn-call { background:var(--red); color:white; }
+.btn-wa { background:#25D366; color:white; }
+.btn-map { background:var(--blue); color:white; }
+
+/* ORDER FORM */
+.order-form { padding:14px; }
+.form-group { margin-bottom:14px; }
+.form-label { font-size:13px; font-weight:600; color:var(--dark); margin-bottom:6px; display:block; }
+.form-input, .form-select, .form-textarea {
+  width:100%; border:2px solid #FFE082; border-radius:12px;
+  padding:11px 14px; font-family:'Poppins',sans-serif; font-size:14px;
+  background:#FFFDE7; outline:none; transition:border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--yellow2); background:white; }
+.form-textarea { resize:vertical; min-height:90px; }
+.form-select { appearance:none; cursor:pointer; }
+.qty-row { display:flex; gap:10px; }
+.qty-row .form-group { flex:1; }
+.submit-btn {
+  width:100%; background:linear-gradient(135deg, var(--red), var(--red2));
+  color:white; border:none; border-radius:14px; padding:15px;
+  font-family:'Poppins',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; box-shadow:0 4px 20px rgba(211,47,47,0.35);
+  transition:transform 0.15s;
+}
+.submit-btn:hover { transform:scale(1.02); }
+
+/* NUTRITION TABLE */
+.nutrition-card { margin:14px; background:white; border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); }
+.nutrition-card h3 { font-family:'Playfair Display',serif; font-size:16px; color:var(--dark); margin-bottom:14px; }
+.nutrition-table { width:100%; border-collapse:collapse; font-size:12px; }
+.nutrition-table th { background:var(--green); color:white; padding:8px 10px; text-align:left; font-weight:600; }
+.nutrition-table td { padding:7px 10px; border-bottom:1px solid #f0f0f0; color:#444; }
+.nutrition-table tr:nth-child(even) td { background:#F9FBE7; }
+.cooking-steps { margin-top:14px; }
+.cooking-steps h4 { font-size:14px; font-weight:700; color:var(--dark); margin-bottom:10px; }
+.step { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+.step-num { width:28px; height:28px; background:var(--red); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+.step-text { font-size:13px; color:#555; line-height:1.5; padding-top:4px; }
+
+/* WHOLESALE INFO */
+.wholesale-card { margin:14px; background:linear-gradient(135deg,#1A237E,#283593); border-radius:var(--radius); padding:20px; box-shadow:0 4px 20px rgba(26,35,126,0.3); }
+.wholesale-card h3 { font-family:'Playfair Display',serif; font-size:18px; color:var(--yellow); margin-bottom:14px; }
+.wholesale-item { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
+.wholesale-icon { font-size:22px; flex-shrink:0; }
+.wholesale-text h4 { font-size:13px; font-weight:700; color:white; }
+.wholesale-text p { font-size:12px; color:rgba(255,255,255,0.75); margin-top:2px; }
+
+/* GALLERY */
+.gallery-grid { display:flex; flex-wrap:wrap; padding:0 10px; gap:10px; }
+.gallery-item {
+  width:calc(50% - 5px); height:140px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center; font-size:60px;
+  position:relative; overflow:hidden; cursor:pointer;
+}
+.gallery-item:nth-child(1) { background:linear-gradient(135deg,#FFF9C4,#FFE082); }
+.gallery-item:nth-child(2) { background:linear-gradient(135deg,#FFCCBC,#FF8A65); }
+.gallery-item:nth-child(3) { background:linear-gradient(135deg,#C8E6C9,#66BB6A); }
+.gallery-item:nth-child(4) { background:linear-gradient(135deg,#BBDEFB,#42A5F5); }
+.gallery-item:nth-child(5) { background:linear-gradient(135deg,#F8BBD9,#EC407A); }
+.gallery-item:nth-child(6) { background:linear-gradient(135deg,#E1BEE7,#AB47BC); }
+.gallery-label { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; font-size:11px; font-weight:600; text-align:center; padding:5px; }
+
+/* ABOUT SCREEN */
+.about-hero { background:linear-gradient(135deg,#FFD700,#FFA000,#D32F2F); padding:30px 20px; text-align:center; }
+.about-hero h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:white; }
+.about-hero p { font-size:13px; color:rgba(255,255,255,0.85); margin-top:6px; }
+.about-card { margin:14px; background:white; border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); }
+.about-card h3 { font-family:'Playfair Display',serif; font-size:16px; color:var(--dark); margin-bottom:10px; border-bottom:2px solid #FFF3E0; padding-bottom:8px; }
+.about-card p { font-size:13px; color:#555; line-height:1.8; }
+.cert-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.cert-badge { background:#E8F5E9; border:2px solid #4CAF50; border-radius:10px; padding:8px 14px; font-size:12px; font-weight:700; color:var(--green); display:flex; align-items:center; gap:5px; }
+
+/* TESTIMONIALS */
+.testimonial { margin:14px; background:white; border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); border-left:4px solid var(--yellow2); }
+.testimonial .stars { color:var(--yellow2); font-size:16px; margin-bottom:6px; }
+.testimonial p { font-size:13px; color:#555; font-style:italic; line-height:1.6; }
+.testimonial .author { font-size:12px; font-weight:700; color:var(--dark); margin-top:8px; }
+
+/* SETTINGS */
+.settings-list { padding:14px; display:flex; flex-direction:column; gap:10px; }
+.settings-item {
+  background:white; border-radius:14px; padding:14px 16px;
+  display:flex; align-items:center; gap:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06); cursor:pointer;
+  transition:transform 0.15s;
+}
+.settings-item:hover { transform:translateY(-2px); }
+.settings-item .s-icon { font-size:26px; }
+.settings-item h4 { font-size:14px; font-weight:600; color:var(--dark); }
+.settings-item p { font-size:11px; color:#888; margin-top:1px; }
+.settings-arrow { margin-left:auto; color:#ccc; font-size:18px; }
+
+/* ══════════════════════════════
+   BOTTOM NAVIGATION
+══════════════════════════════ */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; height:66px;
+  background:white; box-shadow:0 -2px 20px rgba(0,0,0,0.1);
+  display:none; align-items:center; justify-content:space-around;
+  z-index:300; border-top:2px solid #FFF3E0;
+}
+.bottom-nav.visible { display:flex; }
+.nav-btn {
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  background:none; border:none; cursor:pointer; padding:6px 10px;
+  border-radius:12px; transition:background 0.15s; flex:1;
+}
+.nav-btn .nav-icon { font-size:22px; }
+.nav-btn span { font-size:10px; font-weight:600; color:#aaa; }
+.nav-btn.active span { color:var(--red); }
+.nav-btn.active .nav-icon { filter:drop-shadow(0 0 3px rgba(211,47,47,0.4)); }
+
+/* TOAST */
+#toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+  background:#1A1A1A; color:white; padding:10px 22px; border-radius:20px;
+  font-size:13px; font-weight:600; z-index:9999; opacity:0;
+  transition:opacity 0.3s; white-space:nowrap; pointer-events:none;
+}
+
+/* DIVIDER */
+.divider { height:1px; background:linear-gradient(90deg,transparent,#FFE082,transparent); margin:4px 20px; }
+
+/* CHIPS */
+.chip-row { display:flex; flex-wrap:wrap; gap:8px; padding:0 16px 14px; }
+.chip {
+  background:white; border:2px solid #FFE082; border-radius:20px;
+  padding:7px 14px; font-size:12px; font-weight:600; color:var(--dark);
+  cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:5px;
+}
+.chip:hover, .chip.active { background:var(--red); color:white; border-color:var(--red); }
+
+/* SCROLL TO TOP */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#FFE082; border-radius:2px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     SCREEN 1: SPLASH / HOME
+════════════════════════════════ -->
+<div class="screen active" id="screen-home">
+  <span class="home-deco">🫓</span>
+  <span class="home-deco">🥣</span>
+  <span class="home-deco">🌾</span>
+  <span class="home-deco">🍽️</span>
+
+  <div class="home-center">
+    <div class="home-logo-ring">
+      <span class="logo-emoji">🌾</span>
+    </div>
+    <div class="home-brand">Vinayaka Foods</div>
+    <div class="home-tel">📞 6300878331 &nbsp;|&nbsp; 9121630593</div>
+    <div class="home-fssai">✅ FSSAI Certified · 20124141001678</div>
+    <button class="enter-btn" onclick="goTo('screen-main')">
+      🛒 Enter Shop
+    </button>
+    <p class="home-tagline">"Feel the Home Made Taste..."</p>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 2: MAIN DASHBOARD
+════════════════════════════════ -->
+<div class="screen" id="screen-main">
+  <div class="app-bar">
+    <div>
+      <div class="app-bar-title">🌾 Vinayaka Foods</div>
+      <div class="app-bar-sub">Wholesale & Retail · Guntur, AP</div>
+    </div>
+    <button class="hero-tel-btn btn-wa" style="margin-left:auto;padding:8px 12px;font-size:11px;" onclick="window.open('https://wa.me/916300878331','_blank')">💬 Chat</button>
+  </div>
+  <div class="main-content">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-badge-row">
+          <span class="hero-badge">🏆 100% Natural</span>
+          <span class="hero-badge">✅ FSSAI Certified</span>
+          <span class="hero-badge">🏪 Wholesale & Retail</span>
+        </div>
+        <div class="hero-title">Vinayaka<br>Foods 🌾</div>
+        <div class="hero-subtitle">దోశ పిండి · ఇడ్లీ పిండి · Ready Made</div>
+        <div class="hero-tel-row">
+          <button class="hero-tel-btn" onclick="window.location.href='tel:6300878331'">📞 6300878331</button>
+          <button class="hero-tel-btn" onclick="window.location.href='tel:9121630593'">📞 9121630593</button>
+          <button class="hero-tel-btn hero-wa-btn" onclick="window.open('https://wa.me/916300878331','_blank')">💬 WhatsApp</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Red Product Banner -->
+    <div class="product-banner">
+      <div class="product-banner-text" style="flex:1;">
+        <h3>దోశ పిండి &amp; ఇడ్లీ పిండి</h3>
+        <p>Fresh daily · Wholesale rates available</p>
+        <div class="product-tags">
+          <span class="product-tag">పూరి</span>
+          <span class="product-tag">చపాతి</span>
+          <span class="product-tag">పుల్కా</span>
+          <span class="product-tag">రాగి చపాతి</span>
+          <span class="product-tag">జొన్న చపాతి</span>
+          <span class="product-tag">పచ్చళ్లు</span>
+          <span class="product-tag">కారప్పాడులు</span>
+        </div>
+      </div>
+      <div style="font-size:60px;">🫓</div>
+    </div>
+
+    <!-- Quick Actions -->
+    <p class="section-title">⚡ Quick Actions</p>
+    <div class="chip-row">
+      <div class="chip" onclick="goTo('screen-order')">📦 Place Order</div>
+      <div class="chip" onclick="goTo('screen-products')">🛍️ Products</div>
+      <div class="chip" onclick="goTo('screen-wholesale')">🏭 Wholesale</div>
+      <div class="chip" onclick="goTo('screen-nutrition')">📊 Nutrition</div>
+      <div class="chip" onclick="goTo('screen-gallery')">📸 Gallery</div>
+      <div class="chip" onclick="goTo('screen-about')">ℹ️ About Us</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Green Info -->
+    <div class="green-card">
+      <h3>🏪 Our Products</h3>
+      <p>
+        మా వద్ద రెడిమేడ్ పూరి, చపాతి, పుల్కా, రాగి చపాతి, జొన్న చపాతి, పచ్చళ్లు, కారప్పాడులు లభించును.<br><br>
+        Functions, Hotels, Tiffin Centers — అన్నీటికీ Order పై Wholesale రేట్లకే Supply చేయబడును.
+      </p>
+    </div>
+
+    <!-- Address -->
+    <div class="address-card">
+      <h3>📍 Find Us</h3>
+      <div class="address-row"><span class="address-icon">🏠</span> IPD కాలని చివర, కిడాంబి నగర్, సంగడిగుంట, గుంటూరు — 522001, AP</div>
+      <div class="address-row"><span class="address-icon">👤</span> V. Vijaya Bhaskar</div>
+      <div class="address-row"><span class="address-icon">✉️</span> vijaybhaskarvadlapatla@gmail.com</div>
+      <div class="address-row"><span class="address-icon">🕐</span> Daily — Fresh stock available from morning</div>
+      <div class="action-btns">
+        <button class="action-btn btn-call" onclick="window.location.href='tel:6300878331'">📞 Call Now</button>
+        <button class="action-btn btn-wa" onclick="window.open('https://wa.me/916300878331','_blank')">💬 WhatsApp</button>
+      </div>
+    </div>
+
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn active" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 3: PRODUCTS
+════════════════════════════════ -->
+<div class="screen" id="screen-products">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">🛍️ Our Products</div></div>
+  </div>
+  <div class="main-content">
+    <div class="product-banner" style="margin-top:14px;">
+      <div class="product-banner-text">
+        <h3>Fresh Daily Products</h3>
+        <p>100% Natural • No Preservatives • FSSAI Certified</p>
+      </div>
+    </div>
+    <p class="section-title">🌾 Main Products</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-card-icon">🫓</div>
+        <div class="product-card-body">
+          <h4>దోశ పిండి</h4>
+          <p>Dosa Batter — Fresh wet mix. Rice, Urid Dhall, Fenugreek & Purified Water.</p>
+          <span class="product-card-price">₹60 / kg</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🥣</div>
+        <div class="product-card-body">
+          <h4>ఇడ్లీ పిండి</h4>
+          <p>Idli Batter — Soft & fluffy idlis. Makes 20–24 idlis per kg. Best before 3 days.</p>
+          <span class="product-card-price">₹60 / kg</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🫶</div>
+        <div class="product-card-body">
+          <h4>చపాతి / పుల్కా</h4>
+          <p>Soft ready-made chapati & pulka. Freshly prepared every day.</p>
+          <span class="product-card-price">On Order</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🌿</div>
+        <div class="product-card-body">
+          <h4>రాగి చపాతి</h4>
+          <p>Ragi Chapati — Healthy millet-based flatbread. Rich in calcium & fiber.</p>
+          <span class="product-card-price">On Order</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🌽</div>
+        <div class="product-card-body">
+          <h4>జొన్న చపాతి</h4>
+          <p>Jowar Chapati — Traditional sorghum flatbread. Gluten-friendly option.</p>
+          <span class="product-card-price">On Order</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🍱</div>
+        <div class="product-card-body">
+          <h4>పూరి</h4>
+          <p>Ready-made Puri — Crispy & fresh. Ideal for functions & catering orders.</p>
+          <span class="product-card-price">On Order</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🌶️</div>
+        <div class="product-card-body">
+          <h4>పచ్చళ్లు</h4>
+          <p>Homestyle pickles — Traditional Andhra taste. Various varieties available.</p>
+          <span class="product-card-price">Ask Price</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-icon">🧂</div>
+        <div class="product-card-body">
+          <h4>కారప్పాడులు</h4>
+          <p>Spicy Karappadus — Crunchy traditional snacks made fresh.</p>
+          <span class="product-card-price">Ask Price</span>
+        </div>
+      </div>
+    </div>
+    <div class="address-card" style="background:#FFF8E1;border-left-color:var(--red);">
+      <h3>💡 For Bulk / Wholesale Pricing</h3>
+      <p style="font-size:13px;color:#555;">Call or WhatsApp for wholesale rates on all products. Special pricing for Functions, Hotels & Tiffin Centers.</p>
+      <div class="action-btns">
+        <button class="action-btn btn-call" onclick="window.location.href='tel:6300878331'">📞 Call</button>
+        <button class="action-btn btn-wa" onclick="window.open('https://wa.me/916300878331','_blank')">💬 WhatsApp</button>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn active" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 4: ORDER
+════════════════════════════════ -->
+<div class="screen" id="screen-order">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">📦 Place Order</div></div>
+  </div>
+  <div class="main-content">
+    <div class="product-banner" style="margin-top:14px;">
+      <div class="product-banner-text">
+        <h3>Order Online</h3>
+        <p>Order placed via WhatsApp instantly</p>
+      </div>
+      <span style="font-size:50px;">📲</span>
+    </div>
+    <div class="order-form">
+      <div class="form-group">
+        <label class="form-label">👤 Your Name *</label>
+        <input class="form-input" id="ord-name" type="text" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📱 Phone Number *</label>
+        <input class="form-input" id="ord-phone" type="tel" placeholder="Enter your phone number">
+      </div>
+      <div class="form-group">
+        <label class="form-label">🛍️ Select Product *</label>
+        <select class="form-select" id="ord-product">
+          <option value="">-- Select Product --</option>
+          <option>దోశ పిండి (Dosa Batter)</option>
+          <option>ఇడ్లీ పిండి (Idli Batter)</option>
+          <option>చపాతి / పుల్కా</option>
+          <option>రాగి చపాతి</option>
+          <option>జొన్న చపాతి</option>
+          <option>పూరి</option>
+          <option>పచ్చళ్లు</option>
+          <option>కారప్పాడులు</option>
+          <option>Mixed / Multiple Products</option>
+        </select>
+      </div>
+      <div class="qty-row">
+        <div class="form-group">
+          <label class="form-label">⚖️ Quantity</label>
+          <input class="form-input" id="ord-qty" type="number" placeholder="e.g. 5" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📏 Unit</label>
+          <select class="form-select" id="ord-unit">
+            <option>kg</option>
+            <option>pieces</option>
+            <option>packets</option>
+            <option>dozen</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📍 Delivery Address</label>
+        <input class="form-input" id="ord-addr" type="text" placeholder="Enter delivery address">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📝 Special Instructions</label>
+        <textarea class="form-textarea" id="ord-notes" placeholder="Any special requirements, delivery time, etc."></textarea>
+      </div>
+      <button class="submit-btn" onclick="sendOrder()">
+        💬 Send Order via WhatsApp
+      </button>
+      <p style="text-align:center;font-size:11px;color:#aaa;margin-top:10px;">Order will be sent to Vinayaka Foods on WhatsApp</p>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn active" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 5: NUTRITION / COOKING
+════════════════════════════════ -->
+<div class="screen" id="screen-nutrition">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">📊 Nutrition & Cooking</div></div>
+  </div>
+  <div class="main-content">
+    <div class="nutrition-card">
+      <h3>🧪 Nutritional Facts (Per 1 kg)</h3>
+      <table class="nutrition-table">
+        <tr><th>Nutrient</th><th>Amount</th></tr>
+        <tr><td>Energy</td><td>1528.9 Kcal</td></tr>
+        <tr><td>Protein</td><td>49.9 g</td></tr>
+        <tr><td>Fat</td><td>12.9 g</td></tr>
+        <tr><td>Saturated Fatty Acids</td><td>5.8 g</td></tr>
+        <tr><td>MUFA</td><td>4.8 g</td></tr>
+        <tr><td>PUFA</td><td>2.3 g</td></tr>
+        <tr><td>Trans Fatty Acid</td><td>0 g</td></tr>
+        <tr><td>Cholesterol</td><td>0 g</td></tr>
+        <tr><td>Carbohydrate</td><td>303.0 g</td></tr>
+        <tr><td>Sugar</td><td>0 g</td></tr>
+      </table>
+    </div>
+    <div class="nutrition-card">
+      <h3>📦 Ingredients</h3>
+      <p style="font-size:13px;color:#555;line-height:1.8;">Rice, Urid Dhall, Fenugreek &amp; Purified Water</p>
+      <div style="margin-top:10px;font-size:13px;color:#555;line-height:1.8;">
+        <strong>Net Weight:</strong> 1 Kg<br>
+        <strong>Max. Retail Price:</strong> ₹60.00 (Incl. all taxes)<br>
+        <strong>Expiry:</strong> Best before 3 days<br>
+        <strong>Storage:</strong> KEEP REFRIGERATED
+      </div>
+    </div>
+    <div class="nutrition-card">
+      <div class="cooking-steps">
+        <h4>👨‍🍳 Cooking Directions (Dosa)</h4>
+        <div class="step"><div class="step-num">1</div><div class="step-text">Take the ready wet mix into a bowl and add salt as required.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Spread dosa mix evenly on the pan with medium flame heat.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text">Sprinkle little oil on dosa and cook till golden brown.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text">Now serve hot dosa with chutney or masala curry. Enjoy!</div></div>
+      </div>
+    </div>
+    <div class="green-card">
+      <h3>📝 Important Notes</h3>
+      <p>
+        • ఫ్రిజ్ లో నుండి తీసిన పిండిని సుమారు 1 గంట తరువాత ఉపయోగిస్తే ఇడ్లీ, దోశ రుచిగా ఉండును.<br><br>
+        • పిండిని కవర్లో నుండి తీసిన తరువాత దానికి తగినట్లు నీళ్లు, ఉప్పు కలపవలెను.<br><br>
+        • రుచిగా 20 నుండి 24 ఇడ్లీలు (కుక్కర్ ఇడ్లీ) తయారుచేయవచ్చును.<br><br>
+        • ఈ పిండిని ఫ్రిజ్ లో 4 రోజుల వరకు నిలవ ఉంచి ఉపయోగించవచ్చును.
+      </p>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 6: WHOLESALE
+════════════════════════════════ -->
+<div class="screen" id="screen-wholesale">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">🏭 Wholesale Info</div></div>
+  </div>
+  <div class="main-content">
+    <div class="wholesale-card" style="margin-top:14px;">
+      <h3>🏭 Wholesale Supply</h3>
+      <div class="wholesale-item">
+        <span class="wholesale-icon">🍽️</span>
+        <div class="wholesale-text"><h4>Functions & Events</h4><p>Marriage functions కి Wholesale రేట్లకే Supply</p></div>
+      </div>
+      <div class="wholesale-item">
+        <span class="wholesale-icon">🏨</span>
+        <div class="wholesale-text"><h4>Hotels & Restaurants</h4><p>హోటల్స్ కి Daily fresh supply available</p></div>
+      </div>
+      <div class="wholesale-item">
+        <span class="wholesale-icon">🥡</span>
+        <div class="wholesale-text"><h4>Tiffin Centres</h4><p>టిఫిన్ బండ్లకు Order పై Wholesale రేట్లకే</p></div>
+      </div>
+      <div class="wholesale-item">
+        <span class="wholesale-icon">🏪</span>
+        <div class="wholesale-text"><h4>Retail Shops</h4><p>Retail shops కి bulk supply with competitive pricing</p></div>
+      </div>
+    </div>
+    <div class="address-card">
+      <h3>📞 Contact for Wholesale</h3>
+      <div class="address-row"><span class="address-icon">👤</span>V. Vijaya Bhaskar</div>
+      <div class="address-row"><span class="address-icon">📱</span>6300878331 &nbsp;|&nbsp; 9121630593</div>
+      <div class="address-row"><span class="address-icon">✉️</span>vijaybhaskarvadlapatla@gmail.com</div>
+      <div class="action-btns">
+        <button class="action-btn btn-call" onclick="window.location.href='tel:6300878331'">📞 Call</button>
+        <button class="action-btn btn-wa" onclick="window.open('https://wa.me/916300878331','_blank')">💬 WhatsApp</button>
+      </div>
+    </div>
+    <div class="green-card">
+      <h3>✅ Why Choose Us?</h3>
+      <p>
+        • 100% Natural ingredients — No artificial colours<br>
+        • FSSAI Certified (20124141001678)<br>
+        • Fresh preparation daily — No preservatives<br>
+        • Wholesale rates for bulk orders<br>
+        • Home delivery available on orders<br>
+        • Trusted by hundreds of customers in Guntur
+      </p>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 7: GALLERY
+════════════════════════════════ -->
+<div class="screen" id="screen-gallery">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">📸 Gallery</div></div>
+  </div>
+  <div class="main-content" style="padding:14px;">
+    <div class="gallery-grid">
+      <div class="gallery-item"><span>🫓</span><span class="gallery-label">దోశ పిండి</span></div>
+      <div class="gallery-item"><span>🥣</span><span class="gallery-label">ఇడ్లీ పిండి</span></div>
+      <div class="gallery-item"><span>🫶</span><span class="gallery-label">చపాతి</span></div>
+      <div class="gallery-item"><span>🌿</span><span class="gallery-label">రాగి చపాతి</span></div>
+      <div class="gallery-item"><span>🍽️</span><span class="gallery-label">పూరి</span></div>
+      <div class="gallery-item"><span>📦</span><span class="gallery-label">Product Packs</span></div>
+    </div>
+    <div class="address-card" style="margin-top:14px;">
+      <h3>📷 Share Your Photos</h3>
+      <p style="font-size:13px;color:#555;margin-bottom:10px;">Made something delicious with our products? Share on WhatsApp!</p>
+      <button class="action-btn btn-wa" onclick="window.open('https://wa.me/916300878331','_blank')">💬 Send on WhatsApp</button>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 8: ABOUT
+════════════════════════════════ -->
+<div class="screen" id="screen-about">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">ℹ️ About Us</div></div>
+  </div>
+  <div class="main-content">
+    <div class="about-hero">
+      <div style="font-size:60px;margin-bottom:10px;">🌾</div>
+      <h2>Vinayaka Foods</h2>
+      <p>"Feel the Home Made Taste..."</p>
+    </div>
+    <div class="about-card">
+      <h3>🏪 About Our Shop</h3>
+      <p>Vinayaka Foods is a trusted name in Guntur, Andhra Pradesh for fresh, hygienic, and 100% natural food products. We specialize in Dosa Batter, Idli Batter, and a wide range of ready-made items including Chapati, Puri, Pulka, Ragi Chapati, Jowar Chapati, Pickles and more. Our products are freshly prepared every day with no artificial additives or preservatives.</p>
+    </div>
+    <div class="about-card">
+      <h3>✅ Certifications</h3>
+      <div class="cert-row">
+        <div class="cert-badge">✅ FSSAI · 20124141001678</div>
+        <div class="cert-badge">🌿 100% Natural</div>
+        <div class="cert-badge">🚫 No Preservatives</div>
+      </div>
+    </div>
+    <div class="about-card">
+      <h3>📍 Address</h3>
+      <p>D.No. 70-1-450/1, Kobbari Kayala Sambaiah Colony,<br>Sangadigunta, Guntur — 522001, Andhra Pradesh<br><br>
+      Also at: IPD కాలని చివర, కిడాంబి నగర్, సంగడిగుంట, గుంటూరు</p>
+    </div>
+    <div class="about-card">
+      <h3>👤 Contact Person</h3>
+      <p><strong>V. Vijaya Bhaskar</strong><br>📱 6300878331 &nbsp;|&nbsp; 9121630593<br>✉️ vijaybhaskarvadlapatla@gmail.com</p>
+      <div class="action-btns" style="margin-top:12px;">
+        <button class="action-btn btn-call" onclick="window.location.href='tel:6300878331'">📞 Call</button>
+        <button class="action-btn btn-wa" onclick="window.open('https://wa.me/916300878331','_blank')">💬 WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <p class="section-title">⭐ Customer Reviews</p>
+    <div class="testimonial">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>"చాలా రుచిగా ఉంటుంది! Every day we use Vinayaka Foods dosa batter. Fresh and tasty always."</p>
+      <div class="author">— Lakshmi, Guntur</div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>"Best wholesale rates in Guntur. We supply to our tiffin center daily. Very reliable and fresh quality."</p>
+      <div class="author">— Ravi Kumar, Hotel Owner</div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>"Marriage function లో పూరి, చపాతి order చేసాం. చాలా బాగా చేసారు. Wholesale rate లో deliver చేసారు."</p>
+      <div class="author">— Suresh, Sangadigunta</div>
+    </div>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn active" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- ════════════════════════════════
+     SCREEN 9: SETTINGS / MORE
+════════════════════════════════ -->
+<div class="screen" id="screen-settings">
+  <div class="app-bar">
+    <button class="back-btn" onclick="goTo('screen-main')">←</button>
+    <div><div class="app-bar-title">⚙️ More Options</div></div>
+  </div>
+  <div class="main-content">
+    <div class="settings-list">
+      <div class="settings-item" onclick="window.location.href='tel:6300878331'">
+        <span class="s-icon">📞</span>
+        <div><h4>Call Us</h4><p>6300878331</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="window.location.href='tel:9121630593'">
+        <span class="s-icon">📞</span>
+        <div><h4>Alternate Number</h4><p>9121630593</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="window.open('https://wa.me/916300878331','_blank')">
+        <span class="s-icon">💬</span>
+        <div><h4>WhatsApp</h4><p>Chat with us on WhatsApp</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="window.location.href='mailto:vijaybhaskarvadlapatla@gmail.com'">
+        <span class="s-icon">✉️</span>
+        <div><h4>Email Us</h4><p>vijaybhaskarvadlapatla@gmail.com</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="goTo('screen-wholesale')">
+        <span class="s-icon">🏭</span>
+        <div><h4>Wholesale Info</h4><p>Bulk orders & pricing</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="goTo('screen-nutrition')">
+        <span class="s-icon">📊</span>
+        <div><h4>Nutrition & Cooking</h4><p>How to use our products</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="goTo('screen-gallery')">
+        <span class="s-icon">📸</span>
+        <div><h4>Gallery</h4><p>View product photos</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="goTo('screen-about')">
+        <span class="s-icon">ℹ️</span>
+        <div><h4>About Vinayaka Foods</h4><p>Our story & certifications</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+      <div class="settings-item" onclick="shareApp()">
+        <span class="s-icon">📤</span>
+        <div><h4>Share This App</h4><p>Share with friends & family</p></div>
+        <span class="settings-arrow">›</span>
+      </div>
+    </div>
+
+    <!-- FSSAI Badge -->
+    <div style="text-align:center;padding:20px 20px 10px;">
+      <div style="display:inline-block;background:white;border-radius:16px;padding:16px 24px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <div style="font-size:13px;font-weight:700;color:var(--green);">✅ FSSAI Certified</div>
+        <div style="font-size:11px;color:#888;margin-top:2px;">Licence No: 20124141001678</div>
+        <div style="font-size:11px;color:#888;">100% Natural · No Preservatives</div>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:11px;color:#ccc;padding:0 20px 20px;">Vinayaka Foods · Sangadigunta, Guntur, AP</p>
+  </div>
+  <nav class="bottom-nav visible">
+    <button class="nav-btn" onclick="goTo('screen-main')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="goTo('screen-products')"><span class="nav-icon">🛍️</span><span>Products</span></button>
+    <button class="nav-btn" onclick="goTo('screen-order')"><span class="nav-icon">📦</span><span>Order</span></button>
+    <button class="nav-btn" onclick="goTo('screen-about')"><span class="nav-icon">ℹ️</span><span>About</span></button>
+    <button class="nav-btn active" onclick="goTo('screen-settings')"><span class="nav-icon">⚙️</span><span>More</span></button>
+  </nav>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  /* ── Navigation ── */
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  /* ── WhatsApp Order ── */
+  function sendOrder() {
+    const name    = document.getElementById('ord-name').value.trim();
+    const phone   = document.getElementById('ord-phone').value.trim();
+    const product = document.getElementById('ord-product').value;
+    const qty     = document.getElementById('ord-qty').value.trim();
+    const unit    = document.getElementById('ord-unit').value;
+    const addr    = document.getElementById('ord-addr').value.trim();
+    const notes   = document.getElementById('ord-notes').value.trim();
+
+    if (!name)    { showToast('⚠️ Please enter your name'); return; }
+    if (!phone)   { showToast('⚠️ Please enter phone number'); return; }
+    if (!product) { showToast('⚠️ Please select a product'); return; }
+
+    const msg = `🌾 *New Order — Vinayaka Foods*\n\n` +
+      `👤 Name: ${name}\n` +
+      `📱 Phone: ${phone}\n` +
+      `🛍️ Product: ${product}\n` +
+      (qty ? `⚖️ Quantity: ${qty} ${unit}\n` : '') +
+      (addr ? `📍 Address: ${addr}\n` : '') +
+      (notes ? `📝 Notes: ${notes}\n` : '') +
+      `\n_Sent via Vinayaka Foods App_`;
+
+    window.open('https://wa.me/916300878331?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  /* ── Share App ── */
+  function shareApp() {
+    const text = '🌾 Vinayaka Foods — Fresh Dosa Pindi & Idli Pindi!\nOrder online: Call 6300878331 or WhatsApp for wholesale rates.\n"Feel the Home Made Taste..."';
+    if (navigator.share) {
+      navigator.share({ title: 'Vinayaka Foods', text: text });
+    } else {
+      window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+  }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.opacity = '1';
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.style.opacity = '0', 2500);
+  }
+</script>
+</body>
+</html>
